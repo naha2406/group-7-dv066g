@@ -1,0 +1,7 @@
+Model,Run,Inference Time (s),Output Tokens,Tokens per Second
+llama3.2,1,17.94,150,8.36
+llama3.2,2,17.05,150,8.8
+llama3.2,3,16.11,150,9.31
+gemma3:1b,1,8.49,150,17.67
+gemma3:1b,2,7.65,150,19.61
+gemma3:1b,3,8.4,150,17.86
