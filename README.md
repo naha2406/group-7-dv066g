@@ -161,3 +161,17 @@ the main factor. The commercial model (GPT-4o) produced the most precise and
 best-structured answer, while the local models offer the advantage of running
 free and offline. Differences in performance may be influenced by model size,
 hardware, and other factors.
+
+## Assignment 2 - Question 6
+
+We added a test that calls `ask_capital` three times for Australia. The test passes 
+if at least two replies contain `Canberra`. We used `llama3.2:latest` to answer the 
+questions and judge. All five tests passed in each of the three runs.
+
+If the Australia test failed, we would read the model's actual replies because the 
+test checks for `Canberra` directly. The judge tests use fixed answers, so if one 
+failed, we would check the judge's reply and how the code interpreted it.
+
+The Question 6 Python files are based on Beatriz Cabrero-Daniel's
+[tutoriaLLM project](https://github.com/beatrizcabdan/tutoriaLLM).
+[MIT license](LICENSE).
