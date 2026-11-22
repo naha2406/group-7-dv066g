@@ -172,6 +172,32 @@ If the Australia test failed, we would read the model's actual replies because t
 test checks for `Canberra` directly. The judge tests use fixed answers, so if one 
 failed, we would check the judge's reply and how the code interpreted it.
 
+Run all the tests several times. Do they always give the same result?  
+
+That was achieved in our run, but we don't expect that to happen for sure. Generative models work with sampling of tokens
+in a probabilistic way, which is why even when provided with the same prompt, the generated response wording may vary from
+one run to another ("Canberra is the capital" vs. "The capital city is Canberra, situated in the ACT"). This is precisely 
+what the 2 out of 3 threshold in the consistency tests accounts for.  
+
+When a consistency test fails, can you tell whether the mistake came from the model being tested or from the judge (could 
+be a different model)? 
+
+This will depend on the test. The consistency tests search for the substring directly, which means that if a test fails, 
+we can say that the model’s replies did not meet the substring requirement. If we would repeat the Australia test and got
+a failure, we would print out the raw answers of the model before making the assertion to find out if the model hallucinated 
+another capital, did not name the capital of Australia but explained its answer verbally, or decided not to give any response.
+One limitation of the Australia test is that the substring check is case-sensitive. For example, “The capital is canberra” 
+gives the correct city, but the test does not count it because it looks for “Canberra” with a capital C.  
+
+Judge tests cannot differentiate between judge errors and model errors, because the judge itself is an LLM and is subject 
+to similar biases (like position bias and verbosity bias) and hallucinations. It means that if one of the judge tests 
+returned failure, we would not be able to tell from that failure alone if the answer was indeed wrong, or the judge made
+a mistake in classification. In our specific judge tests the answers are fixed, so we already know what verdict to expect. 
+Looking at the judge’s actual reply can help us tell whether it gave the wrong verdict or whether our code interpreted 
+the reply incorrectly. To decrease the uncertainty, we could use a different model as a judge (for example, GPT-4o or 
+bigger model running locally), request JSON output with short reasoning field instead of just YES/NO, rerun the judge on 
+the same inputs multiple times and take the majority decision, swap the expected and given answers to mitigate position
+bias, and manually verify the judgment of some of the cases. 
 The Question 6 Python files are based on Beatriz Cabrero-Daniel's
 [tutoriaLLM project](https://github.com/beatrizcabdan/tutoriaLLM).
 [MIT license](LICENSE).
